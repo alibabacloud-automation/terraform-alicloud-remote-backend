@@ -12,6 +12,11 @@ variable "backend_ots_lock_instance" {
   default     = "tf-oss-backend"
 }
 
+variable "backend_ots_lock_instance_type" {
+  description = "The type for Tablestore (Capacity or HighPerformance)"
+  default     = "HighPerformance"
+}
+
 variable "create_ots_lock_table" {
   default     = false
   description = "Boolean:  If you have a ots table already, use that one, else make this true and one will be created"
@@ -21,6 +26,7 @@ variable "backend_ots_lock_table" {
   description = "OTS table to hold state lock when updating. If not set, the module will craete one with prefix `terraform-remote-backend`"
   default     = ""
 }
+
 variable "create_backend_bucket" {
   default     = false
   description = "Boolean.  If you have a OSS bucket already, use that one, else make this true and one will be created"
