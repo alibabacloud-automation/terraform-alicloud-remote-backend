@@ -68,19 +68,19 @@ resource "alicloud_ots_table" "this" {
 */
 resource "local_file" "this" {
   content = <<EOF
-    terraform {
-      backend "oss" {
-        profile             = "default"
-        bucket              = "${local.bucket_name}"
-        prefix              = "${var.state_path}"
-        key                 = "${var.state_name}"
-        acl                 = "${var.state_acl}"
-        region              = "${local.default_region}"
-        encrypt             = "${var.encrypt_state}"
-        tablestore_endpoint = "${local.lock_table_endpoint}"
-        tablestore_table    = "${local.lock_table_name}"
-      }
-    }
+terraform {
+  backend "oss" {
+    profile             = "default"
+    bucket              = "${local.bucket_name}"
+    prefix              = "${var.state_path}"
+    key                 = "${var.state_name}"
+    acl                 = "${var.state_acl}"
+    region              = "${local.default_region}"
+    encrypt             = "${var.encrypt_state}"
+    tablestore_endpoint = "${local.lock_table_endpoint}"
+    tablestore_table    = "${local.lock_table_name}"
+  }
+}
     EOF
 
   filename = "${path.root}/terraform.tf"
