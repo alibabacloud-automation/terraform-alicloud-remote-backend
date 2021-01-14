@@ -1,17 +1,20 @@
+data "alicloud_account" "current_account" {}
+
 provider "alicloud" {
   version              = ">=1.56.0"
   region               = var.region != "" ? var.region : null
   configuration_source = "terraform-alicloud-modules/remote-backend"
+  profile              = "default"
 }
 
 locals {
   default_bucket_name     = "terraform-remote-backend-${random_uuid.this.result}"
-  default_lock_table_name = replace("terraform-remote-backend-lock-table-${random_uuid.this.result}", "-", "_")
+  default_lock_table_name = "terraform-remote-backend-lock-table-${random_uuid.this.result}"
   default_lock_instance   = "tf-oss-backend"
   default_region          = var.region != "" ? var.region : data.alicloud_regions.this.ids.0
   bucket_name             = var.backend_oss_bucket != "" ? var.backend_oss_bucket : local.default_bucket_name
   lock_table_instance     = var.backend_ots_lock_instance != "" ? var.backend_ots_lock_instance : local.default_lock_instance
-  lock_table_name         = var.backend_ots_lock_table != "" ? var.backend_ots_lock_table : local.default_lock_table_name
+  lock_table_name         = replace(var.backend_ots_lock_table != "" ? var.backend_ots_lock_table : local.default_lock_table_name, "-", "_")
   lock_table_endpoint     = "https://${local.lock_table_instance}.${local.default_region}.ots.aliyuncs.com"
 
 }
@@ -36,10 +39,11 @@ resource "alicloud_oss_bucket" "this" {
 
 # OTS table store to lock state during applies
 resource "alicloud_ots_instance" "this" {
-  count       = var.create_ots_lock_instance ? 1 : 0
-  name        = local.lock_table_instance
-  description = "Terraform remote backend state lock."
-  accessed_by = "Any"
+  count         = var.create_ots_lock_instance ? 1 : 0
+  name          = local.lock_table_instance
+  description   = "Terraform remote backend state lock."
+  accessed_by   = "Any"
+  instance_type = var.backend_ots_lock_instance_type
   tags = {
     Purpose = "Terraform state lock for state in ${local.bucket_name}:${var.state_path}/${var.state_name}"
   }
@@ -52,7 +56,7 @@ resource "alicloud_ots_table" "this" {
   table_name    = local.lock_table_name
   time_to_live  = -1
   primary_key {
-    name = "init"
+    name = "LockID"
     type = "String"
   }
 }
@@ -64,18 +68,19 @@ resource "alicloud_ots_table" "this" {
 */
 resource "local_file" "this" {
   content = <<EOF
-    terraform {
-      backend "oss" {
-        bucket              = "${local.bucket_name}"
-        prefix              = "${var.state_path}"
-        key                 = "${var.state_name}"
-        acl                 = "${var.state_acl}"
-        region              = "${local.default_region}"
-        encrypt             = "${var.encrypt_state}"
-        tablestore_endpoint = "${local.lock_table_endpoint}"
-        tablestore_table    = "${local.lock_table_name}"
-      }
-    }
+terraform {
+  backend "oss" {
+    profile             = "default"
+    bucket              = "${local.bucket_name}"
+    prefix              = "${var.state_path}"
+    key                 = "${var.state_name}"
+    acl                 = "${var.state_acl}"
+    region              = "${local.default_region}"
+    encrypt             = "${var.encrypt_state}"
+    tablestore_endpoint = "${local.lock_table_endpoint}"
+    tablestore_table    = "${local.lock_table_name}"
+  }
+}
     EOF
 
   filename = "${path.root}/terraform.tf"
