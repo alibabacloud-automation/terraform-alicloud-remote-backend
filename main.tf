@@ -1,16 +1,7 @@
-terraform {
-  required_providers {
-    alicloud = {
-      source  = "aliyun/alicloud"
-      version = ">=1.56.0"
-    }
-  }
-}
-
-provider "alicloud" {
-  region               = var.region != "" ? var.region : null
-  configuration_source = "terraform-alicloud-modules/remote-backend"
-}
+#provider "alicloud" {
+#  region               = var.region != "" ? var.region : null
+#  configuration_source = "terraform-alicloud-modules/remote-backend"
+#}
 
 locals {
   default_bucket_name     = "terraform-remote-backend-${random_uuid.this.result}"
