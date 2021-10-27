@@ -1,3 +1,12 @@
+terraform {
+  required_providers {
+    alicloud = {
+      source  = "aliyun/alicloud"
+      version = ">=1.56.0"
+    }
+  }
+}
+
 provider "alicloud" {
   version              = ">=1.56.0"
   region               = var.region != "" ? var.region : null
@@ -52,7 +61,7 @@ resource "alicloud_ots_table" "this" {
   table_name    = local.lock_table_name
   time_to_live  = -1
   primary_key {
-    name = "init"
+    name = "lock"
     type = "String"
   }
 }
@@ -64,19 +73,19 @@ resource "alicloud_ots_table" "this" {
 */
 resource "local_file" "this" {
   content = <<EOF
-    terraform {
-      backend "oss" {
-        bucket              = "${local.bucket_name}"
-        prefix              = "${var.state_path}"
-        key                 = "${var.state_name}"
-        acl                 = "${var.state_acl}"
-        region              = "${local.default_region}"
-        encrypt             = "${var.encrypt_state}"
-        tablestore_endpoint = "${local.lock_table_endpoint}"
-        tablestore_table    = "${local.lock_table_name}"
-      }
+  terraform {
+    backend "oss" {
+      bucket              = "${local.bucket_name}"
+      prefix              = "${var.state_path}"
+      key                 = "${var.state_name}"
+      acl                 = "${var.state_acl}"
+      region              = "${local.default_region}"
+      encrypt             = "${var.encrypt_state}"
+      tablestore_endpoint = "${local.lock_table_endpoint}"
+      tablestore_table    = "${local.lock_table_name}"
     }
-    EOF
+  }
+  EOF
 
   filename = "${path.root}/terraform.tf"
 }
