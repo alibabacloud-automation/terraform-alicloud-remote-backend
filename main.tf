@@ -1,9 +1,3 @@
-provider "alicloud" {
-  version              = ">=1.56.0"
-  region               = var.region != "" ? var.region : null
-  configuration_source = "terraform-alicloud-modules/remote-backend"
-}
-
 locals {
   default_bucket_name     = "terraform-remote-backend-${random_uuid.this.result}"
   default_lock_table_name = replace("terraform-remote-backend-lock-table-${random_uuid.this.result}", "-", "_")
