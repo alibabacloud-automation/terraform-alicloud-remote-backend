@@ -46,7 +46,7 @@ resource "alicloud_ots_table" "this" {
   table_name    = local.lock_table_name
   time_to_live  = -1
   primary_key {
-    name = "init"
+    name = "LockID"
     type = "String"
   }
 }
