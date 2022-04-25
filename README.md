@@ -1,6 +1,7 @@
-Terraform module to deploy a remote backend storage for Alibaba Cloud  
-terraform-alicloud-remote-backend
+Terraform module to deploy a remote backend storage for Alibaba Cloud
 
+terraform-alicloud-remote-backend
+=======================================
 
 A terraform module to set up [remote state management](https://www.terraform.io/docs/state/remote.html) with [OSS backend](https://www.terraform.io/docs/backends/types/oss.html) for your account. 
 It creates an encrypted OSS bucket to store state files and a OTS table for state locking and consistency checking.
@@ -133,7 +134,7 @@ More details see [How to use provider in the module](https://www.terraform.io/do
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 0.12.2 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 0.13.0 |
 | <a name="requirement_alicloud"></a> [alicloud](#requirement\_alicloud) | >= 1.56.0 |
 
 Authors

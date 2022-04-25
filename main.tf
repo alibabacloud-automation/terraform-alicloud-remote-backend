@@ -7,7 +7,6 @@ locals {
   lock_table_instance     = var.backend_ots_lock_instance != "" ? var.backend_ots_lock_instance : local.default_lock_instance
   lock_table_name         = var.backend_ots_lock_table != "" ? var.backend_ots_lock_table : local.default_lock_table_name
   lock_table_endpoint     = "https://${local.lock_table_instance}.${local.default_region}.ots.aliyuncs.com"
-
 }
 
 resource "random_uuid" "this" {}
@@ -19,35 +18,29 @@ data "alicloud_regions" "this" {
 # OSS Bucket to hold state.
 resource "alicloud_oss_bucket" "this" {
   count  = var.create_backend_bucket ? 1 : 0
-  acl    = "private"
   bucket = local.bucket_name
-
-  tags = {
-    Name      = "TF remote state"
-    Terraform = "true"
-  }
+  acl    = var.acl
+  tags   = var.oss_tags
 }
 
 # OTS table store to lock state during applies
 resource "alicloud_ots_instance" "this" {
   count       = var.create_ots_lock_instance ? 1 : 0
   name        = local.lock_table_instance
-  description = "Terraform remote backend state lock."
-  accessed_by = "Any"
-  tags = {
-    Purpose = "Terraform state lock for state in ${local.bucket_name}:${var.state_path}/${var.state_name}"
-  }
+  description = var.description
+  accessed_by = var.accessed_by
+  tags        = var.ots_tags
 }
 
 resource "alicloud_ots_table" "this" {
   count         = var.create_ots_lock_table ? 1 : 0
   instance_name = local.lock_table_instance
-  max_version   = 1
   table_name    = local.lock_table_name
-  time_to_live  = -1
+  max_version   = var.max_version
+  time_to_live  = var.time_to_live
   primary_key {
-    name = "LockID"
-    type = "String"
+    name = var.primary_key_name
+    type = var.primary_key_type
   }
 }
 
@@ -57,7 +50,8 @@ resource "alicloud_ots_table" "this" {
    to auto-copy state up to oss
 */
 resource "local_file" "this" {
-  content = <<EOF
+  count    = var.create_local_file ? 1 : 0
+  content  = <<EOF
     terraform {
       backend "oss" {
         bucket              = "${local.bucket_name}"
@@ -71,6 +65,5 @@ resource "local_file" "this" {
       }
     }
     EOF
-
-  filename = "${path.root}/terraform.tf"
+  filename = "${path.root}/${var.filename}"
 }
