@@ -7,10 +7,10 @@ locals {
   lock_table_instance     = var.backend_ots_lock_instance != "" ? var.backend_ots_lock_instance : local.default_lock_instance
   lock_table_name         = var.backend_ots_lock_table != "" ? var.backend_ots_lock_table : local.default_lock_table_name
   lock_table_endpoint     = "https://${local.lock_table_instance}.${local.default_region}.ots.aliyuncs.com"
-
 }
 
-resource "random_uuid" "this" {}
+resource "random_uuid" "this" {
+}
 
 data "alicloud_regions" "this" {
   current = true
@@ -72,5 +72,5 @@ resource "local_file" "this" {
     }
     EOF
 
-  filename = "${path.root}/terraform.tf"
+  filename = "${path.root}/terraform.tf.sample"
 }
