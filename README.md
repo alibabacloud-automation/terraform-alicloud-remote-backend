@@ -25,7 +25,7 @@ module "remote_state" {
   create_ots_lock_table     = true
   region                    = "cn-hangzhou"
   state_name                = "prod/terraform.tfstate"
-  # Difine your own ots instance name
+  # Define your own OTS instance name.
   backend_ots_lock_instance = "${your_own_ots_instance_name}"
   encrypt_state             = true
 }
