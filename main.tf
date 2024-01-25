@@ -41,7 +41,7 @@ resource "alicloud_ots_instance" "this" {
 
 resource "alicloud_ots_table" "this" {
   count         = var.create_ots_lock_table ? 1 : 0
-  instance_name = local.lock_table_instance
+  instance_name = var.create_ots_lock_instance ? alicloud_ots_instance.this[0].name : local.lock_table_instance
   max_version   = 1
   table_name    = local.lock_table_name
   time_to_live  = -1
