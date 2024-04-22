@@ -1,6 +1,17 @@
+terraform {
+  required_providers {
+    alicloud = {
+      source = "hashicorp/alicloud"
+    }
+  }
+}
+
+variable "region" {
+  default = "cn-hangzhou"
+}
+
 provider "alicloud" {
-  region = "eu-central-1"
-  alias  = "eu"
+  region = var.region
 }
 
 resource "random_integer" "default" {
@@ -10,9 +21,6 @@ resource "random_integer" "default" {
 
 module "remote_state" {
   source = "../.."
-  providers = {
-    alicloud = alicloud.eu
-  }
 
   create_backend_bucket = true
 
@@ -26,7 +34,7 @@ module "remote_state" {
   # If the specified OTS Table already exists, you need to set create_ots_lock_table = false
   # backend_ots_lock_table  = "<your-ots-table-name>"
 
-  region        = "cn-hangzhou"
+  region        = var.region
   state_name    = "prod/terraform.tfstate"
   encrypt_state = true
 }
