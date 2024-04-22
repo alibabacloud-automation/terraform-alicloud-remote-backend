@@ -1,14 +1,23 @@
+provider "alicloud" {
+  region = "eu-central-1"
+  alias  = "eu"
+}
+
 resource "random_integer" "default" {
   min = 10000
   max = 99999
 }
 
 module "remote_state" {
-  source                = "../.."
+  source = "../.."
+  providers = {
+    alicloud = alicloud.eu
+  }
+
   create_backend_bucket = true
 
   create_ots_lock_instance = true
-  
+
   # If the specified OTS Instance already exists, you need to set create_ots_lock_instance = false
   backend_ots_lock_instance = "ots-i-${random_integer.default.result}"
 
