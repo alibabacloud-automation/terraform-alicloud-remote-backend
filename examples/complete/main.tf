@@ -28,6 +28,7 @@ module "remote_state" {
 
   # If the specified OTS Instance already exists, you need to set create_ots_lock_instance = false
   backend_ots_lock_instance = "ots-i-${random_integer.default.result}"
+  ots_instance_type         = "Capacity"
 
   create_ots_lock_table = true
   # Specify a custom OTS Table or use an existing Table with the parameter backend_ots_lock_table

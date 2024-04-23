@@ -1,4 +1,4 @@
-# Basic Remote Backend example
+# Complete Remote Backend example
 
 Configuration in this directory set up remote state management with OSS backend for your account.
 

@@ -30,10 +30,11 @@ resource "alicloud_oss_bucket" "this" {
 
 # OTS table store to lock state during applies
 resource "alicloud_ots_instance" "this" {
-  count       = var.create_ots_lock_instance ? 1 : 0
-  name        = local.lock_table_instance
-  description = "Terraform remote backend state lock."
-  accessed_by = "Any"
+  count         = var.create_ots_lock_instance ? 1 : 0
+  name          = local.lock_table_instance
+  instance_type = var.ots_instance_type
+  description   = "Terraform remote backend state lock."
+  accessed_by   = "Any"
   tags = {
     Purpose = "Terraform state lock for state in ${local.bucket_name}:${var.state_path}/${var.state_name}"
   }

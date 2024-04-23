@@ -24,6 +24,12 @@ variable "backend_ots_lock_instance" {
   default     = "tf-oss-backend"
 }
 
+variable "ots_instance_type" {
+  description = "The type of instance. Valid values are Capacity and HighPerformance. Default to HighPerformance."
+  type        = string
+  default     = null
+}
+
 #alicloud_ots_table
 variable "create_ots_lock_table" {
   description = "Boolean:  If you have a ots table already, use that one, else make this true and one will be created."
