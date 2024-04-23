@@ -1,4 +1,8 @@
-## 1.5.0 (Unreleased)
+## 1.6.0 (Unreleased)
+## 1.5.0 (2024-04-23)
+
+- module/alicloud_ots_instance: support attribute instance_type [GH-20](https://github.com/alibabacloud-automation/terraform-alicloud-remote-backend/pull/20)
+
 ## 1.4.1 (2024-04-22)
 
 - examples/complete: update examples [GH-19](https://github.com/alibabacloud-automation/terraform-alicloud-remote-backend/pull/19)
