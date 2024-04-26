@@ -2,7 +2,7 @@ locals {
   default_bucket_name     = "terraform-remote-backend-${random_uuid.this.result}"
   default_lock_table_name = replace("terraform-remote-backend-lock-table-${random_uuid.this.result}", "-", "_")
   default_lock_instance   = "tf-oss-backend"
-  default_region          = var.region != "" ? var.region : data.alicloud_regions.this.ids.0
+  default_region          = var.region != "" ? var.region : data.alicloud_regions.this.ids[0]
   bucket_name             = var.backend_oss_bucket != "" ? var.backend_oss_bucket : local.default_bucket_name
   lock_table_instance     = var.backend_ots_lock_instance != "" ? var.backend_ots_lock_instance : local.default_lock_instance
   lock_table_name         = var.backend_ots_lock_table != "" ? var.backend_ots_lock_table : local.default_lock_table_name
@@ -19,13 +19,41 @@ data "alicloud_regions" "this" {
 # OSS Bucket to hold state.
 resource "alicloud_oss_bucket" "this" {
   count  = var.create_backend_bucket ? 1 : 0
-  acl    = "private"
   bucket = local.bucket_name
 
   tags = {
     Name      = "TF remote state"
     Terraform = "true"
   }
+  lifecycle {
+    ignore_changes = [versioning, logging, server_side_encryption_rule]
+  }
+}
+
+resource "alicloud_oss_bucket_acl" "this" {
+  bucket = one(alicloud_oss_bucket.this[*].bucket)
+  acl    = "private"
+}
+
+resource "alicloud_oss_bucket_versioning" "this" {
+  count  = var.create_backend_bucket && length(var.bucket_versioning_status) > 0 ? 1 : 0
+  bucket = one(alicloud_oss_bucket.this[*].bucket)
+  status = var.bucket_versioning_status
+}
+
+resource "alicloud_oss_bucket_logging" "this" {
+  count         = var.create_backend_bucket && length(var.bucket_logging) > 0 ? 1 : 0
+  bucket        = one(alicloud_oss_bucket.this[*].bucket)
+  target_bucket = lookup(var.bucket_logging[0], "target_bucket", null)
+  target_prefix = lookup(var.bucket_logging[0], "target_prefix", null)
+}
+
+resource "alicloud_oss_bucket_server_side_encryption" "this" {
+  count               = var.create_backend_bucket && length(var.bucket_server_side_encryption) > 0 ? 1 : 0
+  bucket              = one(alicloud_oss_bucket.this[*].bucket)
+  sse_algorithm       = lookup(var.bucket_server_side_encryption[0], "sse_algorithm", null)
+  kms_master_key_id   = lookup(var.bucket_server_side_encryption[0], "kms_master_key_id", null)
+  kms_data_encryption = lookup(var.bucket_server_side_encryption[0], "kms_data_encryption", null)
 }
 
 # OTS table store to lock state during applies
