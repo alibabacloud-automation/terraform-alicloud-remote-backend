@@ -11,6 +11,34 @@ variable "backend_oss_bucket" {
   default     = ""
 }
 
+variable "bucket_versioning_status" {
+  description = "Specifies the versioning state of a bucket. Valid values: `Enabled` and `Suspended`."
+  type        = string
+  default     = ""
+}
+
+variable "bucket_logging" {
+  description = "The logging configuration of the bucket. Supports arguments: target_bucket, target_prefix. The target_bucket is the name of the bucket that will receive the log objects, which is required. The target_prefix is the key prefix for log objects, which is optional."
+  type        = list(map(string))
+  default     = []
+
+  validation {
+    condition     = length(var.bucket_logging) < 2
+    error_message = "Only 1 bucket logging configuration can be specified."
+  }
+}
+
+variable "bucket_server_side_encryption" {
+  description = "The server-side encryption configuration of the bucket. Supports arguments: kms_master_key_id, sse_algorithm, kms_data_encryption. The sse_algorith is required."
+  type        = list(map(string))
+  default     = []
+
+    validation {
+    condition     = length(var.bucket_server_side_encryption) < 2
+    error_message = "Only 1 bucket server side encryption configuration can be specified."
+  }
+}
+
 #alicloud_ots_instance
 variable "create_ots_lock_instance" {
   description = "Boolean:  If you have a OTS instance already, use that one, else make this true and one will be created."
