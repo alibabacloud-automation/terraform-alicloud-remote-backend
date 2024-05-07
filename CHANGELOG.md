@@ -1,4 +1,8 @@
 ## 1.7.0 (Unreleased)
+## 1.6.1 (2024-05-07)
+
+- docs: update README.md [GH-22](https://github.com/alibabacloud-automation/terraform-alicloud-remote-backend/pull/22)
+
 ## 1.6.0 (2024-05-07)
 
 - module/oss_bucket: support versiong, logging and server_side_encryption for oss_bucket [GH-21](https://github.com/alibabacloud-automation/terraform-alicloud-remote-backend/pull/21)
