@@ -55,19 +55,22 @@ See [the official document](https://www.terraform.io/docs/backends/types/oss.htm
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-|------|-------------|:----:|:-----:|:-----:|
-| region | The region used to launch this module resources. | string | `null` | no |
-| create\_ots\_lock\_instance | Boolean:  If you have a ots table already, use that one, else make this true and one will be created. | bool | `false` | no |
-| backend\_ots\_lock\_instance | The name of OTS instance to which table belongs. | string | `"tf-oss-backend"` | no |
-| create\_ots\_lock\_table | Boolean:  If you have a ots table already, use that one, else make this true and one will be created. | bool | `false` | no |
-| backend\_ots\_lock\_table | OTS table to hold state lock when updating. If not set, the module will craete one with prefix `terraform-remote-backend`. | string | "" | no |
-| create\_backend\_bucket | Boolean.  If you have a OSS bucket already, use that one, else make this true and one will be created. | bool | `false` | no |
-| backend\_oss\_bucket | Name of OSS bucket prepared to hold your terraform state(s). If not set, the module will craete one with prefix `terraform-remote-backend`. | string | "" | no |
-| state\_acl | Canned ACL applied to bucket. | string | `"private"` | no |
-| encrypt\_state | Boolean. Whether to encrypt terraform state. | object | `true` | no |
-| state\_path | The path directory of the state file will be stored. Examples: dev/frontend, prod/db, etc.. | string | `"env:"` | no |
-| state\_name | The name of the state file. Examples: dev/tf.state, dev/frontend/tf.tfstate, etc.. | string | `"terraform.tfstate"` | no |
-
+|------|-------------|------|---------|:--------:|
+| <a name="input_backend_oss_bucket"></a> [backend\_oss\_bucket](#input\_backend\_oss\_bucket) | Name of OSS bucket prepared to hold your terraform state(s). If not set, the module will craete one with prefix `terraform-remote-backend`. | `string` | `""` | no |
+| <a name="input_backend_ots_lock_instance"></a> [backend\_ots\_lock\_instance](#input\_backend\_ots\_lock\_instance) | The name of OTS instance to which table belongs. | `string` | `"tf-oss-backend"` | no |
+| <a name="input_backend_ots_lock_table"></a> [backend\_ots\_lock\_table](#input\_backend\_ots\_lock\_table) | OTS table to hold state lock when updating. If not set, the module will craete one with prefix `terraform-remote-backend`. | `string` | `""` | no |
+| <a name="input_bucket_logging"></a> [bucket\_logging](#input\_bucket\_logging) | The logging configuration of the bucket. Supports arguments: target\_bucket, target\_prefix. The target\_bucket is the name of the bucket that will receive the log objects, which is required. The target\_prefix is the key prefix for log objects, which is optional. | `list(map(string))` | `[]` | no |
+| <a name="input_bucket_server_side_encryption"></a> [bucket\_server\_side\_encryption](#input\_bucket\_server\_side\_encryption) | The server-side encryption configuration of the bucket. Supports arguments: kms\_master\_key\_id, sse\_algorithm, kms\_data\_encryption. The sse\_algorith is required. | `list(map(string))` | `[]` | no |
+| <a name="input_bucket_versioning_status"></a> [bucket\_versioning\_status](#input\_bucket\_versioning\_status) | Specifies the versioning state of a bucket. Valid values: `Enabled` and `Suspended`. | `string` | `""` | no |
+| <a name="input_create_backend_bucket"></a> [create\_backend\_bucket](#input\_create\_backend\_bucket) | Boolean.  If you have a OSS bucket already, use that one, else make this true and one will be created. | `bool` | `false` | no |
+| <a name="input_create_ots_lock_instance"></a> [create\_ots\_lock\_instance](#input\_create\_ots\_lock\_instance) | Boolean:  If you have a OTS instance already, use that one, else make this true and one will be created. | `bool` | `false` | no |
+| <a name="input_create_ots_lock_table"></a> [create\_ots\_lock\_table](#input\_create\_ots\_lock\_table) | Boolean:  If you have a ots table already, use that one, else make this true and one will be created. | `bool` | `false` | no |
+| <a name="input_encrypt_state"></a> [encrypt\_state](#input\_encrypt\_state) | Boolean. Whether to encrypt terraform state. | `bool` | `true` | no |
+| <a name="input_ots_instance_type"></a> [ots\_instance\_type](#input\_ots\_instance\_type) | The type of instance. Valid values are Capacity and HighPerformance. Default to HighPerformance. | `string` | `null` | no |
+| <a name="input_region"></a> [region](#input\_region) | The region used to launch this module resources. | `string` | `""` | no |
+| <a name="input_state_acl"></a> [state\_acl](#input\_state\_acl) | Canned ACL applied to bucket. | `string` | `"private"` | no |
+| <a name="input_state_name"></a> [state\_name](#input\_state\_name) | The name of the state file. Examples: dev/tf.state, dev/frontend/tf.tfstate, etc.. | `string` | `""` | no |
+| <a name="input_state_path"></a> [state\_path](#input\_state\_path) | The path directory of the state file will be stored. Examples: dev/frontend, prod/db, etc.. | `string` | `""` | no |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 
 ## Notes
