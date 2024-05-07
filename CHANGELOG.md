@@ -1,4 +1,8 @@
-## 1.6.0 (Unreleased)
+## 1.7.0 (Unreleased)
+## 1.6.0 (2024-05-07)
+
+- module/oss_bucket: support versiong, logging and server_side_encryption for oss_bucket [GH-21](https://github.com/alibabacloud-automation/terraform-alicloud-remote-backend/pull/21)
+
 ## 1.5.0 (2024-04-23)
 
 - module/alicloud_ots_instance: support attribute instance_type [GH-20](https://github.com/alibabacloud-automation/terraform-alicloud-remote-backend/pull/20)
