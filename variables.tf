@@ -33,7 +33,7 @@ variable "bucket_server_side_encryption" {
   type        = list(map(string))
   default     = []
 
-    validation {
+  validation {
     condition     = length(var.bucket_server_side_encryption) < 2
     error_message = "Only 1 bucket server side encryption configuration can be specified."
   }
