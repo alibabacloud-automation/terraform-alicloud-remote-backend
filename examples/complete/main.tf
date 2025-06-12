@@ -1,15 +1,3 @@
-terraform {
-  required_providers {
-    alicloud = {
-      source = "hashicorp/alicloud"
-    }
-  }
-}
-
-variable "region" {
-  default = "cn-hangzhou"
-}
-
 provider "alicloud" {
   region = var.region
 }

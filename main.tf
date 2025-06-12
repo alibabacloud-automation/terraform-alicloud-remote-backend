@@ -31,6 +31,7 @@ resource "alicloud_oss_bucket" "this" {
 }
 
 resource "alicloud_oss_bucket_acl" "this" {
+  count  = var.create_backend_bucket ? 1 : 0
   bucket = one(alicloud_oss_bucket.this[*].bucket)
   acl    = "private"
 }
