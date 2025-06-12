@@ -1,4 +1,8 @@
 ## 1.7.0 (Unreleased)
+## 1.6.2 (2025-06-12)
+
+- fix: add count for alicloud_oss_bucket_acl and update version constraint [GH-23](https://github.com/alibabacloud-automation/terraform-alicloud-remote-backend/pull/23)
+
 ## 1.6.1 (2024-05-07)
 
 - docs: update README.md [GH-22](https://github.com/alibabacloud-automation/terraform-alicloud-remote-backend/pull/22)
