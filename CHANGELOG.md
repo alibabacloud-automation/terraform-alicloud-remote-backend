@@ -1,3 +1,14 @@
+## [2.0.0](https://github.com/alibabacloud-automation/terraform-alicloud-remote-backend/compare/v1.6.2...v2.0.0) (2026-04-22)
+
+
+### ⚠ BREAKING CHANGES
+
+* add provider version constraint for aliyun/alicloud
+
+### Features
+
+* add provider version constraint for aliyun/alicloud ([b084f81](https://github.com/alibabacloud-automation/terraform-alicloud-remote-backend/commit/b084f814eef9171bdb893a7145aa9afcf7db8146))
+
 ## 1.7.0 (Unreleased)
 ## 1.6.2 (2025-06-12)
 
