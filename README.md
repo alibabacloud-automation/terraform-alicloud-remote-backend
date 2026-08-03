@@ -19,13 +19,15 @@ You can use this in your terraform template with the following steps.
 
 ```hcl
 module "remote_state" {
-  source                   = "terraform-alicloud-modules/remote-backend/alicloud"
-  create_backend_bucket    = true
-  create_ots_lock_instance = true
-  create_ots_lock_table    = true
-  region                   = "cn-hangzhou"
-  state_name               = "prod/terraform.tfstate"
-  encrypt_state            = true
+  source                    = "terraform-alicloud-modules/remote-backend/alicloud"
+  create_backend_bucket     = true
+  create_ots_lock_instance  = true
+  create_ots_lock_table     = true
+  region                    = "cn-hangzhou"
+  state_name                = "prod/terraform.tfstate"
+  # Define your own OTS instance name.
+  backend_ots_lock_instance = "${your_own_ots_instance_name}"
+  encrypt_state             = true
 }
 ```
 
